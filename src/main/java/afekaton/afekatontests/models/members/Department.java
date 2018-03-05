@@ -11,8 +11,16 @@ public enum Department {
     INDUSTRIAL("תעשייה וניהול");
 
     Department(String displayName) {
-        this.displayName = displayName;
+        this.displayValue = displayName;
     }
 
-    private String displayName;
+    private String displayValue;
+
+    public static Department getDepartment(String displayValue){
+        for (Department department : values()) {
+            if (department.displayValue.equals(displayValue)) return department;
+            if (department.name().equals(displayValue)) return department;
+        }
+        return null;
+    }
 }

@@ -1,28 +1,23 @@
 package afekaton.afekatontests.models.members;
 
-import org.hibernate.annotations.Target;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
 @Entity
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
 
-    @OneToOne
-    private Member member;
+    @Enumerated(EnumType.STRING)
+    private AfekaRole afekaRole;
+    @Enumerated(EnumType.STRING)
+    private Department department;
 
+    private String email;
     private String username;
     private char[] password;
-
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
 
     public String getUsername() {
         return username;
@@ -46,5 +41,29 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public AfekaRole getAfekaRole() {
+        return afekaRole;
+    }
+
+    public void setAfekaRole(AfekaRole afekaRole) {
+        this.afekaRole = afekaRole;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

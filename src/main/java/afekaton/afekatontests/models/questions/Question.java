@@ -1,25 +1,27 @@
 package afekaton.afekatontests.models.questions;
 
-import afekaton.afekatontests.models.members.Member;
+import afekaton.afekatontests.models.members.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Question {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    private String question;
-
-    private int upvotes;
-    private int downvotes;
-
     @OneToOne
-    private Member askingMember;
+    private Category category;
+
+    private String question;
+    @OneToOne
+    private User author;
+
     @OneToMany
-    private List<Answer> answers;
+    private List<Answer> answers = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -27,14 +29,6 @@ public class Question {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Member getAskingMember() {
-        return askingMember;
-    }
-
-    public void setAskingMember(Member askingMember) {
-        this.askingMember = askingMember;
     }
 
     public List<Answer> getAnswers() {
@@ -53,27 +47,19 @@ public class Question {
         this.question = question;
     }
 
-    public int getUpvotes() {
-        return upvotes;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setUpvotes(int upvotes) {
-        this.upvotes = upvotes;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
-    public int getDownvotes() {
-        return downvotes;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setDownvotes(int downvotes) {
-        this.downvotes = downvotes;
-    }
-
-    public void upVote(){
-        upvotes++;
-    }
-
-    public void downVote(){
-        downvotes++;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

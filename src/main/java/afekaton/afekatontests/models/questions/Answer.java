@@ -1,20 +1,22 @@
 package afekaton.afekatontests.models.questions;
 
-import afekaton.afekatontests.models.members.Member;
+import afekaton.afekatontests.models.members.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class Answer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
-    @OneToOne
-    private Member answeringMember;
     private String answer;
+    @OneToOne
+    private User author;
+    @OneToOne
+    @JsonIgnore
+    private Question question;
 
     public int getId() {
         return id;
@@ -24,19 +26,29 @@ public class Answer {
         this.id = id;
     }
 
-    public Member getAnsweringMember() {
-        return answeringMember;
-    }
-
-    public void setAnsweringMember(Member answeringMember) {
-        this.answeringMember = answeringMember;
-    }
-
     public String getAnswer() {
         return answer;
     }
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    @JsonIgnore
+    public Question getQuestion() {
+        return question;
+    }
+
+    @JsonProperty("question")
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 }
