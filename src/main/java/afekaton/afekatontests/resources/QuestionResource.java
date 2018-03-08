@@ -1,15 +1,13 @@
 package afekaton.afekatontests.resources;
 
-import afekaton.afekatontests.models.members.User;
 import afekaton.afekatontests.models.questions.Answer;
 import afekaton.afekatontests.models.questions.Question;
 import afekaton.afekatontests.persistance.CategoryRepository;
 import afekaton.afekatontests.persistance.QuestionRepository;
-import afekaton.afekatontests.persistance.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.QueryParam;
 import java.util.List;
 
 @RestController
@@ -21,7 +19,7 @@ public class QuestionResource {
     @Autowired private CategoryRepository categoryRepository;
 
     @PostMapping
-    public Question postQuestion(@RequestBody Question question){
+    public Question postQuestion(@RequestBody @Validated Question question){
         if (!categoryRepository.existsById(question.getCategory().getId())){
             categoryRepository.save(question.getCategory());
         }

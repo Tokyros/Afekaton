@@ -3,6 +3,7 @@ package afekaton.afekatontests.resources;
 import afekaton.afekatontests.models.members.User;
 import afekaton.afekatontests.persistance.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sun.net.www.protocol.http.AuthenticationHeader;
 
@@ -32,7 +33,7 @@ public class UserResource {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user){
+    public User createUser(@RequestBody @Validated User user){
         user.setUsername(user.getEmail().split("@")[0]);
         return userRepository.save(user);
     }

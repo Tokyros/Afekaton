@@ -1,9 +1,13 @@
 package afekaton.afekatontests.models.questions;
 
+import afekaton.afekatontests.models.members.Department;
 import afekaton.afekatontests.models.members.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +20,23 @@ public class Question {
     @OneToOne
     private Category category;
 
+    @NotNull(message = "חובה למלא גוף שאלה")
+    @NotEmpty(message = "חובה למלא גוף שאלה")
     private String question;
+
     @OneToOne
     private User author;
 
     @OneToMany
     private List<Answer> answers = new ArrayList<>();
+
+    @OneToOne
+    private Answer correctAnswer;
+
+    @Enumerated(EnumType.STRING)
+    private Department relatedDepartement;
+
+    private int rating;
 
     public int getId() {
         return id;

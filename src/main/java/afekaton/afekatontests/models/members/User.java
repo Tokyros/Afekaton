@@ -1,8 +1,7 @@
 package afekaton.afekatontests.models.members;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @Entity
 public class User {
@@ -15,6 +14,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Department department;
 
+    @Email(message = "חובה למלא כתובת מייל תקינה")
     private String email;
     private String username;
     private char[] password;
@@ -65,5 +65,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "afekaRole=" + afekaRole +
+                ", department=" + department +
+                ", username='" + username + '\'' +
+                '}';
     }
 }
