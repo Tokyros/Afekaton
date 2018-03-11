@@ -1,7 +1,12 @@
 package afekaton.afekatontests.models.members;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class User {
@@ -14,10 +19,15 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Department department;
 
-    @Email(message = "חובה למלא כתובת מייל תקינה")
+    @Email
+    @NotEmpty
+    @Column(unique = true)
     private String email;
     private String username;
-    private char[] password;
+    @NotEmpty
+    @Min(value = 8)
+//    @Max(value = 16)
+    private String password;
 
     public String getUsername() {
         return username;
@@ -27,11 +37,11 @@ public class User {
         this.username = username;
     }
 
-    public char[] getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(char[] password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
