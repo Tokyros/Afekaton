@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public enum AfekaRole {
     STUDENT("תלמיד"),
     TEACHER("מרצה"),
+    TA("מתרגל"),
     ADMINISTRATION("מנהלה");
 
 

@@ -1,40 +1,34 @@
 package afekaton.afekatontests.resources;
 
-import afekaton.afekatontests.models.members.User;
+import afekaton.afekatontests.models.members.ApplicationUser;
 import afekaton.afekatontests.persistance.UserRepository;
+import afekaton.afekatontests.security.user.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import sun.net.www.protocol.http.AuthenticationHeader;
 
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("users")
 public class UserResource {
 
     @Autowired private UserRepository userRepository;
-
-    @GetMapping("login")
-    public User authenticate(@RequestParam("username") final String username, @RequestParam("password") final String password){
-        for (User user : userRepository.findAll()) {
-            if (user.getUsername().equals(username) && new String(user.getPassword()).equals(password)) return user;
-        }
-        throw new NotAuthorizedException(Response.status(Response.Status.UNAUTHORIZED).build());
-    }
+    @Autowired private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping
-    public List<User> getAllUsers(){
-        return (List<User>) userRepository.findAll();
+    public List<ApplicationUser> getAllUsers(){
+        return (List<ApplicationUser>) userRepository.findAll();
     }
 
-    @PostMapping
-    public User createUser(@RequestBody @Validated User user){
-        user.setUsername(user.getEmail().split("@")[0]);
-        return userRepository.save(user);
+    @PostMapping("/sign-up")
+    public ApplicationUser signUp(@RequestBody @Validated ApplicationUser applicationUser){
+        applicationUser.setUsername(applicationUser.getEmail().split("@")[0]);
+        applicationUser.setPassword(bCryptPasswordEncoder.encode(applicationUser.getPassword()));
+        return userRepository.save(applicationUser);
     }
 }

@@ -1,15 +1,20 @@
 package afekaton.afekatontests.models.members;
 
+import afekaton.afekatontests.models.questions.Rated;
+import afekaton.afekatontests.models.questions.Vote;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import java.util.*;
 
 @Entity
-public class User {
+public class ApplicationUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
@@ -24,17 +29,45 @@ public class User {
     @Column(unique = true)
     private String email;
     private String username;
-    @NotEmpty
-    @Min(value = 8)
+//    @NotEmpty
+//    @Min(value = 8)
 //    @Max(value = 16)
     private String password;
+
+    @OneToMany
+    private List<Vote> ratings = new ArrayList<>();
 
     public String getUsername() {
         return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
     public String getPassword() {
@@ -77,9 +110,17 @@ public class User {
         this.email = email;
     }
 
+    public List<Vote> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Vote> ratings) {
+        this.ratings = ratings;
+    }
+
     @Override
     public String toString() {
-        return "User{" +
+        return "ApplicationUser{" +
                 "afekaRole=" + afekaRole +
                 ", department=" + department +
                 ", username='" + username + '\'' +

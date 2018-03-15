@@ -1,7 +1,8 @@
 package afekaton.afekatontests.persistance;
 
-import afekaton.afekatontests.models.members.User;
-import org.springframework.data.repository.CrudRepository;
+import afekaton.afekatontests.models.members.ApplicationUser;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<ApplicationUser, Integer> {
+    ApplicationUser findByUsername(String username);
 }

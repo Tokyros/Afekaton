@@ -1,31 +1,27 @@
 package afekaton.afekatontests.models.questions;
 
+import afekaton.afekatontests.models.members.ApplicationUser;
 import afekaton.afekatontests.models.members.Department;
-import afekaton.afekatontests.models.members.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Question {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+public class Question extends Rated {
 
     @OneToOne
     private Category category;
 
     @NotNull(message = "חובה למלא גוף שאלה")
     @NotEmpty(message = "חובה למלא גוף שאלה")
+    @Lob
     private String question;
 
     @OneToOne
-    private User author;
+    private ApplicationUser author;
 
     @OneToMany
     private List<Answer> answers = new ArrayList<>();
@@ -37,14 +33,6 @@ public class Question {
     private Department relatedDepartement;
 
     private int rating;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public List<Answer> getAnswers() {
         return answers;
@@ -62,11 +50,11 @@ public class Question {
         this.question = question;
     }
 
-    public User getAuthor() {
+    public ApplicationUser getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(ApplicationUser author) {
         this.author = author;
     }
 

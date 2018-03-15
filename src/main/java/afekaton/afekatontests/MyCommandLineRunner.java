@@ -1,13 +1,21 @@
 package afekaton.afekatontests;
 
 import afekaton.afekatontests.models.members.AfekaRole;
+import afekaton.afekatontests.models.members.ApplicationUser;
 import afekaton.afekatontests.models.members.Department;
-import afekaton.afekatontests.models.members.User;
+import afekaton.afekatontests.models.questions.Message;
+import afekaton.afekatontests.persistance.MessageRepository;
 import afekaton.afekatontests.persistance.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Date;
+
 
 @Component
 public class MyCommandLineRunner implements CommandLineRunner{
@@ -15,22 +23,29 @@ public class MyCommandLineRunner implements CommandLineRunner{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private MessageRepository messageRepository;
+
+    private ApplicationUser createUser(String email){
+        ApplicationUser user = new ApplicationUser();
+        user.setEmail(email);
+        user.setUsername(email.split("@")[0]);
+        user.setPassword("1");
+        return user;
+    }
+
     @Override
     public void run(String... strings) throws Exception {
-        User shahar = new User();
-        shahar.setUsername("ShaharR");
-        shahar.setPassword("123456789");
-        shahar.setDepartment(Department.SOFTWARE);
-        shahar.setAfekaRole(AfekaRole.STUDENT);
-        shahar.setEmail("ShaharR@afeka.ac.il");
-        userRepository.save(shahar);
+        ApplicationUser user = createUser("ShaharR@afeka.ac.il");
+        ApplicationUser user2 = createUser("RoyG@afeka.ac.il");
+        ApplicationUser user3 = createUser("AmirZ@afeka.ac.il");
+        ApplicationUser user4 = createUser("OfirA@afeka.ac.il");
 
-        User roy = new User();
-        roy.setUsername("RoyG");
-        roy.setPassword("123456789");
-        roy.setDepartment(Department.SOFTWARE);
-        roy.setAfekaRole(AfekaRole.STUDENT);
-        roy.setEmail("RoyG@Afeka.ac.il");
-        userRepository.save(roy);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForLocation("http://localhost:8080/users/sign-up", user);
+        restTemplate.postForLocation("http://localhost:8080/users/sign-up", user2);
+        restTemplate.postForLocation("http://localhost:8080/users/sign-up", user3);
+        restTemplate.postForLocation("http://localhost:8080/users/sign-up", user4);
     }
+
 }

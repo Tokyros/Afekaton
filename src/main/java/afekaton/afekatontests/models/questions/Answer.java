@@ -1,30 +1,21 @@
 package afekaton.afekatontests.models.questions;
 
-import afekaton.afekatontests.models.members.User;
+import afekaton.afekatontests.models.members.ApplicationUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
 @Entity
-public class Answer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+public class Answer extends Rated {
+
+
     private String answer;
     @OneToOne
-    private User author;
+    private ApplicationUser author;
     @OneToOne
     @JsonIgnore
     private Question question;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getAnswer() {
         return answer;
@@ -34,11 +25,11 @@ public class Answer {
         this.answer = answer;
     }
 
-    public User getAuthor() {
+    public ApplicationUser getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(ApplicationUser author) {
         this.author = author;
     }
 
