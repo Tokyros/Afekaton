@@ -9,6 +9,6 @@ import java.util.List;
  * Created by ps3to_000 on 04-Mar-18.
  */
 public interface QuestionRepository extends CrudRepository<Question, Integer> {
-    List<Question> findByAuthorUsername(String authorUsername);
+    List<Question> findByMessageAuthorUsername(String authorUsername);
 
 }

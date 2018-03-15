@@ -17,16 +17,6 @@ import javax.persistence.EntityManagerFactory;
 @SpringBootApplication
 public class AfekatonTestsApplication {
 
-//	@Bean
-//	public WebMvcConfigurer corsConfiguration(){
-//		return new WebMvcConfigurer() {
-//			@Override
-//			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/**").allowedOrigins("http://localhost:4200").allowedMethods("POST", "GET", "DELETE");
-//			}
-//		};
-//	}
-
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();

@@ -15,12 +15,8 @@ public class AnswerResource {
 
     @Autowired private AnswerRepository answerRepository;
 
-    @Autowired private QuestionRepository questionRepository;
-
     @PostMapping
     public Answer postAnswer(@RequestBody Answer answer){
-        answer.setQuestion(questionRepository.findById(answer.getQuestion().getId()).get());
-        answer.getQuestion().getAnswers().add(answer);
         return answerRepository.save(answer);
     }
 }

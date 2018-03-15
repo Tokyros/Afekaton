@@ -1,5 +1,6 @@
 package afekaton.afekatontests.models.questions;
 
+import afekaton.afekatontests.models.courses.Course;
 import afekaton.afekatontests.models.members.ApplicationUser;
 import afekaton.afekatontests.models.members.Department;
 
@@ -10,59 +11,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Question extends Rated {
+@DiscriminatorValue("2")
+public class Question extends Message {
 
     @OneToOne
-    private Category category;
-
-    @NotNull(message = "חובה למלא גוף שאלה")
-    @NotEmpty(message = "חובה למלא גוף שאלה")
-    @Lob
-    private String question;
-
-    @OneToOne
-    private ApplicationUser author;
-
-    @OneToMany
-    private List<Answer> answers = new ArrayList<>();
-
-    @OneToOne
-    private Answer correctAnswer;
+    private Course relatedCourse;
 
     @Enumerated(EnumType.STRING)
     private Department relatedDepartement;
 
-    private int rating;
-
-    public List<Answer> getAnswers() {
-        return answers;
+    public Course getRelatedCourse() {
+        return relatedCourse;
     }
 
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
+    public void setRelatedCourse(Course relatedCourse) {
+        this.relatedCourse = relatedCourse;
     }
 
-    public String getQuestion() {
-        return question;
+    public Department getRelatedDepartement() {
+        return relatedDepartement;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public ApplicationUser getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(ApplicationUser author) {
-        this.author = author;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setRelatedDepartement(Department relatedDepartement) {
+        this.relatedDepartement = relatedDepartement;
     }
 }
