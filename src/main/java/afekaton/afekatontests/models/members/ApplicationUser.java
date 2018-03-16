@@ -1,5 +1,7 @@
 package afekaton.afekatontests.models.members;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -30,6 +32,7 @@ public class ApplicationUser {
 
     @NotEmpty
     @Size(min = 6)
+    @JsonIgnore
     private String password;
 
     public String getUsername() {
@@ -40,10 +43,12 @@ public class ApplicationUser {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }

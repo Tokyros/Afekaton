@@ -1,14 +1,11 @@
 package afekaton.afekatontests.models.questions;
 
 import afekaton.afekatontests.models.members.ApplicationUser;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.BinaryOperator;
 
 @Entity
 @Inheritance
@@ -34,12 +31,11 @@ public class Message {
     @OneToMany
     List<Message> messageComments;
 
-    @JsonIgnore
     @ElementCollection
     @MapKeyColumn(name="name")
     @Column(name="value")
     @CollectionTable(name="example_attributes", joinColumns=@JoinColumn(name="example_id"))
-    private Map<ApplicationUser, Integer> userRatings = new HashMap<>();
+    private Map<String, Integer> userRatings = new HashMap<>();
 
     private Integer rating;
 
@@ -92,18 +88,25 @@ public class Message {
     }
 
     public Integer getRating() {
-        return rating;
+        Optional<Integer> reduce = getUserRatings().values().stream().reduce(new BinaryOperator<Integer>() {
+            @Override
+            public Integer apply(Integer integer, Integer integer2) {
+                return integer + integer2;
+            }
+        });
+
+        return reduce.isPresent() ? reduce.get() : 0;
     }
 
     public void setRating(Integer rating) {
         this.rating = rating;
     }
 
-    public Map<ApplicationUser, Integer> getUserRatings() {
+    public Map<String, Integer> getUserRatings() {
         return userRatings;
     }
 
-    public void setUserRatings(Map<ApplicationUser, Integer> userRatings) {
+    public void setUserRatings(Map<String, Integer> userRatings) {
         this.userRatings = userRatings;
     }
 }

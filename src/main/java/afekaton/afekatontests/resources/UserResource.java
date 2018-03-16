@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.Response;
+import java.security.Principal;
 import java.util.List;
 
 
@@ -30,5 +31,10 @@ public class UserResource {
         applicationUser.setUsername(applicationUser.getEmail().split("@")[0]);
         applicationUser.setPassword(bCryptPasswordEncoder.encode(applicationUser.getPassword()));
         return userRepository.save(applicationUser);
+    }
+
+    @GetMapping("whoAmI")
+    public ApplicationUser whoAmI(Principal principal){
+        return userRepository.findByUsername(principal.getName());
     }
 }
