@@ -1,6 +1,7 @@
 package afekaton.afekatontests.models.members;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum AfekaRole {
     STUDENT("תלמיד"),
@@ -9,6 +10,7 @@ public enum AfekaRole {
     ADMINISTRATION("מנהלה");
 
 
+    @JsonValue
     private final String displayValue;
 
     AfekaRole(String displayValue) {

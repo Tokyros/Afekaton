@@ -26,7 +26,6 @@ public class ApplicationUser {
     @Column(unique = true)
     private String email;
 
-    @NotEmpty
     @Column(unique = true)
     private String username;
 

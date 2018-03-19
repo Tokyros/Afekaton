@@ -1,5 +1,6 @@
 package afekaton.afekatontests.resources;
 
+import afekaton.afekatontests.models.comparators.QuestionComparators;
 import afekaton.afekatontests.models.members.ApplicationUser;
 import afekaton.afekatontests.models.questions.Answer;
 import afekaton.afekatontests.models.questions.Message;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.security.Principal;
@@ -40,10 +42,15 @@ public class QuestionResource {
     @PostMapping
     public Question postQuestion(@RequestBody @Validated Question question, Principal principal){
         question.setMessageAuthor(userRepository.findByUsername(principal.getName()));
-        question.setRelatedCourse(courseRepository.findByName(question.getRelatedCourse().getName()));
-        question.setCreationDate(new Date());
+        question.setRelatedCourse(courseRepository.findById(question.getRelatedCourse().getId()).get());
+        if (question.getCreationDate() == null) question.setCreationDate(new Date());
         question.setUpdateDate(new Date());
         return questionRepository.save(question);
+    }
+
+    @GetMapping("{questionId}/delete")
+    public void deleteQuestion(@PathVariable("questionId") final Integer questionId){
+        questionRepository.delete(questionRepository.findById(questionId).get());
     }
 
     @PostMapping("{questionId}/comment")
@@ -94,18 +101,13 @@ public class QuestionResource {
             questions = questions.stream().filter(new Predicate<Question>() {
                 @Override
                 public boolean test(Question question) {
-                    return question.getMessageContent().contains(query) || question.getRelatedCourse().getName().contains(query);
+                    return question.getMessageAuthor().getUsername().contains(query) || question.getMessageContent().contains(query) || question.getRelatedCourse().getName().contains(query);
                 }
             }).collect(Collectors.toList());
 
         }
 
-        questions.sort(new Comparator<Question>() {
-            @Override
-            public int compare(Question o1, Question o2) {
-                return o1.getRating().compareTo(o2.getRating()) * -1;
-            }
-        });
+        questions.sort(QuestionComparators.sortByCreationDate);
 
         return questions;
     }

@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -15,7 +17,7 @@ import javax.persistence.EntityManagerFactory;
 
 
 @SpringBootApplication
-public class AfekatonTestsApplication {
+public class AfekatonTestsApplication extends SpringBootServletInitializer {
 
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -26,5 +28,8 @@ public class AfekatonTestsApplication {
 		SpringApplication.run(AfekatonTestsApplication.class, args);
 	}
 
-
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(AfekatonTestsApplication.class);
+	}
 }

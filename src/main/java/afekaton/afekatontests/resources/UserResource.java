@@ -23,7 +23,7 @@ public class UserResource {
 
     @GetMapping
     public List<ApplicationUser> getAllUsers(){
-        return (List<ApplicationUser>) userRepository.findAll();
+        return userRepository.findAll();
     }
 
     @PostMapping("/sign-up")
