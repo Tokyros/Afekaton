@@ -1,6 +1,7 @@
 package afekaton.afekatontests.resources;
 
 import afekaton.afekatontests.models.comparators.QuestionComparators;
+import afekaton.afekatontests.models.courses.Course;
 import afekaton.afekatontests.models.members.ApplicationUser;
 import afekaton.afekatontests.models.questions.Answer;
 import afekaton.afekatontests.models.questions.Message;
@@ -42,7 +43,13 @@ public class QuestionResource {
     @PostMapping
     public Question postQuestion(@RequestBody @Validated Question question, Principal principal){
         question.setMessageAuthor(userRepository.findByUsername(principal.getName()));
-        question.setRelatedCourse(courseRepository.findById(question.getRelatedCourse().getId()).get());
+        if (question.getRelatedCourse().getId() > 0){
+            Optional<Course> course = courseRepository.findById(question.getRelatedCourse().getId());
+            if (!course.isPresent()) throw new NotFoundException("Course with id="+question.getRelatedCourse().getId() + " not found");
+            question.setRelatedCourse(course.get());
+        } else {
+            question.setRelatedCourse(courseRepository.findByName(question.getRelatedCourse().getName()));
+        }
         if (question.getCreationDate() == null) question.setCreationDate(new Date());
         question.setUpdateDate(new Date());
         return questionRepository.save(question);
