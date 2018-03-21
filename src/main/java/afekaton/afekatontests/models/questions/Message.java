@@ -1,8 +1,11 @@
 package afekaton.afekatontests.models.questions;
 
 import afekaton.afekatontests.models.members.ApplicationUser;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
 import java.util.*;
 import java.util.function.BinaryOperator;
@@ -25,10 +28,12 @@ public class Message {
     @OneToOne
     private ApplicationUser messageAuthor;
 
-    private Date creationDate;
-    private Date updateDate;
+    private Date creationDate = new Date();
+    private Date updateDate = new Date();
+    private Integer correctAnswerId;
 
     @OneToMany
+    @Cascade(CascadeType.DELETE)
     List<Message> messageComments;
 
     @ElementCollection
@@ -108,5 +113,13 @@ public class Message {
 
     public void setUserRatings(Map<String, Integer> userRatings) {
         this.userRatings = userRatings;
+    }
+
+    public Integer getCorrectAnswerId() {
+        return correctAnswerId;
+    }
+
+    public void setCorrectAnswerId(Integer correctAnswerId) {
+        this.correctAnswerId = correctAnswerId;
     }
 }

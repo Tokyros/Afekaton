@@ -21,17 +21,7 @@ public class CourseResource {
     CourseRepository courseRepository;
 
     @GetMapping
-    public List<Course> getAllCourses(@QueryParam("query") final String query){
-        List<Course> courses = (List<Course>) courseRepository.findAll();
-        if (query != null && !query.isEmpty()){
-            courses = courses.stream().filter(new Predicate<Course>() {
-                @Override
-                public boolean test(Course course) {
-                    return course.getName().contains(query) || (course.getId() + "").contains(query);
-                }
-            }).collect(Collectors.toList());
-        }
-
-        return courses;
+    public List<Course> getCourses(){
+        return (List<Course>) courseRepository.findAll();
     }
 }
